@@ -26,7 +26,6 @@ const CounterText = styled.span``; // add your styles here
 const MintContainer = styled.div``; // add your styles here
 
 const MintButton = styled(Button)``; // add your styles here
-//button button--large
 
 export interface HomeProps {
   candyMachineId: anchor.web3.PublicKey;
@@ -168,43 +167,19 @@ const Home = (props: HomeProps) => {
 
   return (
     <main>
-
       {wallet && (
-        <div className="contact-form__item">
-        <label className="contact-form__label">Wallet</label>
-        <input type="text" readOnly name="wallet" value={shortenAddress(wallet.publicKey.toBase58() || "")} className="contact-form__input"/>
-      </div>   
-      
-      
-
-
+        <p>Wallet {shortenAddress(wallet.publicKey.toBase58() || "")}</p>
       )}
 
-      {wallet && (
-        <div className="contact-form__item">
-        <label className="contact-form__label">Balance</label>
-        <input type="text" readOnly name="balance" value={((balance || 0).toLocaleString()) + " SOL"} className="contact-form__input"/>
-      </div>   
-      
-      
+      {wallet && <p>Balance: {(balance || 0).toLocaleString()} SOL</p>}
 
+      {wallet && <p>Total Available: {itemsAvailable}</p>}
 
-      )}      
+      {wallet && <p>Redeemed: {itemsRedeemed}</p>}
 
-      {wallet && (
-        <div className="contact-form__item">
-        <label className="contact-form__label">Total Minted</label>
-        <input type="text" readOnly name="minted" value={((itemsRedeemed || 0).toLocaleString()) + "/10K"} className="contact-form__input"/>
-      </div>   
-      
-      
-
-
-      )}      
-
+      {wallet && <p>Remaining: {itemsRemaining}</p>}
 
       <MintContainer>
-        <br/>
         {!wallet ? (
           <ConnectButton>Connect Wallet</ConnectButton>
         ) : (
