@@ -1,2 +1,437 @@
-/* eslint-disable no-unused-expressions */
-!function(a){"use strict";function t(){a(".page__content").find(".hero__image").imagesLoaded({background:!0},(function(){a(".portfolio-wrap").imagesLoaded((function(){a(".portfolio-wrap").masonry({itemSelector:".portfolio-item",transitionDuration:0})})),a(".blog-wrap").imagesLoaded((function(){a(".blog-wrap").masonry({itemSelector:".blog-post",transitionDuration:0})})),a("body").removeClass("loading"),a("body").removeClass("menu--open")})),a(".active-link").removeClass("active-link"),a('a[href="'+e+'"]').addClass("active-link"),Waypoint.destroyAll();var t=0;a(".gallery").each((function(){var e=a(this),o="gallery-"+ ++t;e.attr("id",o);var n=e.attr("data-columns");e.append('<div class="gallery__wrap"></div>'),e.children("img").each((function(){a(this).appendTo("#"+o+" .gallery__wrap")})),e.find(".gallery__wrap img").each((function(){var t=a(this).attr("src");a(this).wrapAll('<div class="gallery__item"><a href="'+t+'" class="gallery__item__link"></div></div>').appendTo()})),e.imagesLoaded((function(){if("1"===n){e.addClass("gallery--carousel"),e.children(".gallery__wrap").addClass("owl-carousel"),e.children(".gallery__wrap").owlCarousel({items:1,loop:!0,mouseDrag:!1,touchDrag:!0,pullDrag:!1,dots:!0,autoplay:!1,autoplayTimeout:6e3,autoHeight:!0,animateOut:"fadeOut"});var a=new Waypoint({element:document.getElementById(o),handler:function(a){"down"===a&&e.children(".gallery__wrap").trigger("stop.owl.autoplay"),"up"===a&&e.children(".gallery__wrap").trigger("play.owl.autoplay")},offset:"-100%"}),t=new Waypoint({element:document.getElementById(o),handler:function(a){"down"===a&&e.children(".gallery__wrap").trigger("play.owl.autoplay"),"up"===a&&e.children(".gallery__wrap").trigger("stop.owl.autoplay")},offset:"100%"})}else e.addClass("gallery--grid"),e.children(".gallery__wrap").masonry({itemSelector:".gallery__item",transitionDuration:0}),e.find(".gallery__item__link").fluidbox({loader:!0});e.addClass("gallery--on")}))})),a(".single p > img").each((function(){var t=a(this).parent("p");a(this).insertAfter(t),a(this).wrapAll('<div class="image-wrap"></div>'),t.remove()})),a(".single iframe").each((function(){if(a(this).attr("src").indexOf("youtube")>=0||a(this).attr("src").indexOf("vimeo")>=0){var t=a(this).attr("width"),e,o=a(this).attr("height")/t*100;a(this).wrapAll('<div class="video-wrap"><div class="video" style="padding-bottom:'+o+'%;"></div></div>')}})),a(".single table").each((function(){a(this).wrapAll('<div class="table-wrap"></div>')}))}var e=a("body").attr("data-page-url"),o=document.title,n=window.History;n.Adapter.bind(window,"statechange",(function(){var l=n.getState();a("body").addClass("loading"),a(".page-loader").load(l.hash+" .page__content",(function(){a("body, html").animate({scrollTop:0},300);var n=400;setTimeout((function(){a(".page .page__content").remove(),a(".page-loader .page__content").appendTo(".page"),a("body").attr("data-page-url",window.location.pathname),e=a("body").attr("data-page-url"),o=a(".page__content").attr("data-page-title"),document.title=o,t()}),400)}))})),a("body").hasClass("ajax-loading")&&a(document).on("click","a",(function(t){t.preventDefault();var l=a(this).attr("href");a(this).hasClass("js-no-ajax")||l.indexOf("#")>=0||l.indexOf("mailto:")>=0||l.indexOf("tel:")>=0||l.indexOf("mint.empirenewcloth.com")>=0?window.location=l:a(this).is(".gallery__item__link")||(l.indexOf("http")>=0 && !l.indexOf("mint.empirenewcloth")>=0?window.open(l,"_blank"):(e=l,n.pushState(null,o,l)))})),t(),a(document).on("click",".js-menu-toggle",(function(){a("body").hasClass("menu--open")?a("body").removeClass("menu--open"):a("body").addClass("menu--open")})),a(document).on("click",".menu__list__item__link",(function(){a(".menu").hasClass("menu--open")&&a(".menu").removeClass("menu--open")})),a(document).on("click",".post",(function(){var t=a(this).find(".post__title a").attr("href");a("body").hasClass("ajax-loading")?(e=t,n.pushState(null,o,t)):window.location=t})),a(document).on("submit","#contact-form",(function(t){a(".contact-form__item--error").removeClass("contact-form__item--error");var e=a('.contact-form__input[name="email"]'),o=a('.contact-form__input[name="name"]'),n=a('.contact-form__textarea[name="message"]'),l=a(".contact-form__gotcha");""===e.val()&&e.closest(".contact-form__item").addClass("contact-form__item--error"),""===o.val()&&o.closest(".contact-form__item").addClass("contact-form__item--error"),""===n.val()&&n.closest(".contact-form__item").addClass("contact-form__item--error"),""!==e.val()&&""!==o.val()&&""!==n.val()&&0===l.val().length||t.preventDefault()}))}(jQuery);
+//
+//
+// Personal JS
+//
+//
+
+
+
+(function ($) {
+	'use strict';
+
+
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Navigation
+
+	// Global vars
+	var navTarget = $('body').attr('data-page-url');
+	var docTitle = document.title;
+	var History = window.History;
+
+	// State change event
+	History.Adapter.bind(window,'statechange',function(){
+		var state = History.getState();
+		// console.log(state);
+
+		// Loading state
+		$('body').addClass('loading');
+
+		// Load the page
+		$('.page-loader').load( state.hash + ' .page__content', function() {
+
+			// Scroll to top
+			$( 'body, html' ).animate({
+				scrollTop: 0
+			}, 300);
+
+			// Find transition time
+			var transitionTime = 400;
+
+			// After current content fades out
+			setTimeout( function() {
+
+				// Remove old content
+				$('.page .page__content').remove();
+
+				// Append new content
+				$('.page-loader .page__content').appendTo('.page');
+
+				// Set page URL
+				$('body').attr('data-page-url', window.location.pathname);
+
+				// Update navTarget
+				navTarget = $('body').attr('data-page-url');
+
+				// Set page title
+				docTitle = $('.page__content').attr('data-page-title');
+				document.title = docTitle;
+
+				// Run page functions
+				pageFunctions();
+
+			}, transitionTime);
+
+		});
+
+	});
+
+
+	// On clicking a link
+
+	if ( $('body').hasClass('ajax-loading') ) {
+
+		$(document).on('click', 'a', function (event){
+
+			// Don't follow link
+			event.preventDefault();
+
+			// Get the link target
+			var thisTarget = $(this).attr('href');
+
+			// If we don't want to use ajax, or the link is an anchor/mailto/tel
+			if ($(this).hasClass('js-no-ajax') || thisTarget.indexOf('#') >= 0 || thisTarget.indexOf('mailto:') >= 0 || thisTarget.indexOf('tel:') >= 0 || thisTarget.indexOf('mint.empirenewcloth.com') >= 0 || thisTarget.indexOf('empirenewcloth.com') >= 0) {
+
+				// Use the given link
+				window.location = thisTarget;
+			}
+
+			// If link is handled by some JS action – e.g. fluidbox
+			else if ( $(this).is('.gallery__item__link') ) {
+				
+				// Let JS handle it
+			}
+
+			// If link is external
+			else if ( thisTarget.indexOf('http') >= 0 ) {
+
+				// Go to the external link
+				window.open(thisTarget, '_blank');
+
+			}
+
+			// If link is internal
+			else {
+
+				// Change navTarget
+				navTarget = thisTarget;
+				
+				// Switch the URL via History
+				History.pushState(null, docTitle, thisTarget);
+			}
+
+		});
+
+	}
+
+
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Page load
+
+	function pageFunctions() {
+
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Show content
+
+		// Wait until first image has loaded
+		$('.page__content').find('.hero__image').imagesLoaded( { background: true }, function() {
+	
+			// Portfolio grid layout
+			$('.portfolio-wrap').imagesLoaded( function() {
+				$('.portfolio-wrap').masonry({
+					itemSelector: '.portfolio-item',
+					transitionDuration: 0
+				});
+			});
+
+			// Blog grid layout
+			$('.blog-wrap').imagesLoaded( function() {
+				$('.blog-wrap').masonry({
+					itemSelector: '.blog-post',
+					transitionDuration: 0
+				});
+			});
+
+			// Show the content
+			$('body').removeClass('loading');
+
+			// Hide the menu
+			$('body').removeClass('menu--open');
+		});
+
+
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Active links
+
+		// Switch active link states
+		$('.active-link').removeClass('active-link');
+
+		$('a[href="' + navTarget + '"]').addClass('active-link');
+
+
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Galleries
+
+		// Destroy all existing waypoints
+		Waypoint.destroyAll();
+
+		// Set up count for galleries to give them unique IDs
+		var galleryCount = 0;
+
+		// If there's a gallery
+		$('.gallery').each( function() {
+
+			// Get gallery element
+			var $this = $(this);
+
+			// Add ID via count
+			galleryCount++;
+			var thisId = 'gallery-' + galleryCount;
+			$this.attr('id', thisId);
+
+			// Gallery columns
+			var galleryCols = $this.attr('data-columns');
+
+			// Set up gallery container
+			$this.append('<div class="gallery__wrap"></div>');
+
+			// Add images to container
+			$this.children('img').each( function() {
+				$(this).appendTo('#' + thisId + ' .gallery__wrap');
+			});
+
+			// Wrap images
+			$this.find('.gallery__wrap img').each( function() {
+				var imageSrc = $(this).attr('src');
+				$(this).wrapAll('<div class="gallery__item"><a href="' + imageSrc + '" class="gallery__item__link"></div></div>').appendTo();
+			});
+
+			// Wait for images to load
+			$this.imagesLoaded( function() {
+
+				// If it's a single column gallery
+				if ( galleryCols === '1' ) {
+
+					// Add carousel class to gallery
+					$this.addClass('gallery--carousel');
+
+					// Add owl styles to gallery wrap
+					$this.children('.gallery__wrap').addClass('owl-carousel');
+
+					// Use carousel
+					$this.children('.gallery__wrap').owlCarousel({
+						items: 1,
+						loop: true,
+						mouseDrag: false,
+						touchDrag: true,
+						pullDrag: false,
+						dots: true,
+						autoplay: false,
+						autoplayTimeout: 6000,
+						autoHeight: true,
+						animateOut: 'fadeOut'
+					});
+
+					// When scrolling over the bottom
+					var waypoint1 = new Waypoint({
+						element: document.getElementById(thisId),
+						handler: function(direction) {
+
+							if ( direction === 'down') {
+
+								// console.log('pause');
+							
+								// Pause this carousel
+								$this.children('.gallery__wrap').trigger('stop.owl.autoplay');
+							}
+
+							if ( direction === 'up') {
+
+								// console.log('play');
+								
+								// Play this carousel
+								$this.children('.gallery__wrap').trigger('play.owl.autoplay');
+							}
+						},
+						offset: '-100%'
+					});
+
+					// When scrolling over the top
+					var waypoint2 = new Waypoint({
+						element: document.getElementById(thisId),
+						handler: function(direction) {
+
+							if ( direction === 'down') {
+
+								// console.log('play');
+								
+								// Play this carousel
+								$this.children('.gallery__wrap').trigger('play.owl.autoplay');
+							}
+
+							if ( direction === 'up') {
+
+								// console.log('pause');
+							
+								// Pause this carousel
+								$this.children('.gallery__wrap').trigger('stop.owl.autoplay');
+							}
+						},
+						offset: '100%'
+					});
+
+				}
+
+				else {
+
+					$this.addClass('gallery--grid');
+
+					// Use masonry layout
+					$this.children('.gallery__wrap').masonry({
+						itemSelector: '.gallery__item',
+						transitionDuration: 0
+					});
+							
+					// Init fluidbox
+					$this.find('.gallery__item__link').fluidbox({
+						loader: true
+					});
+
+				}
+
+				// Show gallery once initialized
+				$this.addClass('gallery--on');
+			});
+
+		});
+
+
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Images
+
+		$('.single p > img').each( function() {
+			var thisP = $(this).parent('p');
+			$(this).insertAfter(thisP);
+			$(this).wrapAll('<div class="image-wrap"></div>');
+			thisP.remove();
+		});
+
+
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Videos
+
+		// For each iframe
+		$('.single iframe').each( function() {
+
+			// If it's YouTube or Vimeo
+			if ( $(this).attr('src').indexOf('youtube') >= 0 || $(this).attr('src').indexOf('vimeo') >= 0 ) {
+
+				var width = $(this).attr('width');
+				var height = $(this).attr('height');
+				var ratio = (height/width)*100;
+
+				// Wrap in video container
+				$(this).wrapAll('<div class="video-wrap"><div class="video" style="padding-bottom:' + ratio + '%;"></div></div>');
+
+			}
+
+		});
+
+
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Tables
+
+		$('.single table').each(function () {
+			$(this).wrapAll('<div class="table-wrap"></div>');
+		});
+
+	}
+
+	// Run functions on load
+	pageFunctions();
+
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Menu
+
+	$(document).on('click', '.js-menu-toggle', function (){
+
+		// If already open
+		if ( $('body').hasClass('menu--open') ) {
+			$('body').removeClass('menu--open');
+		}
+
+		// If not open
+		else {
+			$('body').addClass('menu--open');
+		}
+	});
+
+	$(document).on('click', '.menu__list__item__link', function (){
+
+		// If menu is open when you click a link on mobile
+		if ( $('.menu').hasClass('menu--open') ) {
+			$('.menu').removeClass('menu--open');
+		}
+	});
+
+
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Listing post click
+
+	// Click anywhere on the post to go to the link
+	$(document).on('click', '.post', function (){
+
+		var targetPost = $(this).find('.post__title a').attr('href');
+
+		if ( $('body').hasClass('ajax-loading') ) {
+
+			// Change navTarget
+			navTarget = targetPost;
+			
+			// Switch the URL via History
+			History.pushState(null, docTitle, targetPost);
+		}
+
+		else {
+			// Use the given link
+				window.location = targetPost;
+		}
+	});
+
+
+
+	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Contact Form
+
+	// Override the submit event
+	$(document).on('submit', '#contact-form', function (e) {
+
+		// Clear previous classes
+		$('.contact-form__item--error').removeClass('contact-form__item--error');
+
+		// Get form elements
+		var emailField = $('.contact-form__input[name="email"]');
+		var nameField = $('.contact-form__input[name="name"]');
+		var messageField = $('.contact-form__textarea[name="message"]');
+		var gotchaField = $('.contact-form__gotcha');
+
+		// Validate email
+		if ( emailField.val() === '' ) {
+			emailField.closest('.contact-form__item').addClass('contact-form__item--error');
+		}
+
+		// Validate name
+		if ( nameField.val() === '' ) {
+			nameField.closest('.contact-form__item').addClass('contact-form__item--error');
+		}
+
+		// Validate message
+		if ( messageField.val() === '' ) {
+			messageField.closest('.contact-form__item').addClass('contact-form__item--error');
+		}
+
+		// If all fields are filled, except gotcha
+		if ( emailField.val() !== '' && nameField.val() !== '' && messageField.val() !== '' && gotchaField.val().length === 0 ) {
+
+			// Submit the form!
+		}
+
+		else {
+
+			// Stop submission
+			e.preventDefault();
+		}
+
+	});
+	
+	
+	
+}(jQuery));
